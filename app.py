@@ -12,6 +12,7 @@ CORS(app)
 
 
 UPLOAD_FOLDER = os.path.join('datasets')
+TEST_FOLDER = os.path.join('testing')
  
 # Define allowed files
 ALLOWED_EXTENSIONS = {'csv'}
@@ -19,18 +20,23 @@ ALLOWED_EXTENSIONS = {'csv'}
  
 # Configure upload file path flask
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['TEST_FOLDER'] = TEST_FOLDER
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/submit-data', methods=['POST'])
-def handle_data():
-    data = request.get_json()
-    if not data:
+@app.route('/test', methods=['POST'])
+def testing():
+    try:
+        f = request.file.get('file')
+        file_name = secure_filename(f.filename)
+        f.save(os.path.join(app.config['TEST_FOLDER'],
+                            file_name))
+        return jsonify({'message': 'Data received successfully'}),200
+    except Exception as e:
         return jsonify({'error': 'No data provided'}), 400
-    print(f"Received data: {data}")
-    return jsonify({'message': 'Data received successfully', 'received_data': data})
+
 
 @app.route('/submit-csv', methods=['POST'])
 def handle_csv():
