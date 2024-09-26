@@ -21,6 +21,7 @@ ALLOWED_EXTENSIONS = {'csv'}
 # Configure upload file path flask
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['TEST_FOLDER'] = TEST_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16*1024*1024
 
 @app.route('/')
 def index():
