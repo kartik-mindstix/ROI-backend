@@ -187,6 +187,7 @@ def summarised_data_generation(data,datafilename):
   
   # id = generate_unique_id()
   # save_df_to_csv(channel_conversion,datafilename)
+  channel_conversion.drop(columns=['channel_name_x','channel_name-y','fullVisitorId'],inplace=True)
   channel_conversion.to_csv(f'./improved_datasets/{datafilename}')
 
   return id
