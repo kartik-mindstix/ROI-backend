@@ -23,14 +23,14 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['TEST_FOLDER'] = TEST_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16*1024*1024
 
-@app.route('/')
+@app.route('/') 
 def index():
     return render_template('index.html')
 
 @app.route('/test', methods=['POST'])
 def testing():
     try:
-        f = request.file.get('file')
+        f = request.files.get('file')
         file_name = secure_filename(f.filename)
         f.save(os.path.join(app.config['TEST_FOLDER'],
                             file_name))
