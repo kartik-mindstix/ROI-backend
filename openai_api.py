@@ -18,10 +18,28 @@ def create_marketing_prompt(data):
     You are an expert marketing analyst. Analyze the following dataset and provide insights:
 
     Columns:
-    - conversion_rate: The rate of conversions from users visiting a platform to taking a desired action (e.g., making a purchase, signing up).
-    - converted_user_journeys: User journeys that resulted in conversions across different marketing channels.
-    - frequency: The number of times users interacted with specific marketing channels before converting.
-    - budget_allocation: The percentage of the total marketing budget allocated to each channel.
+    medium: A categorical column indicating the type of marketing medium (e.g., "Direct", "Search", "Referral", etc.). It would be useful for analyzing conversion rates across different mediums.
+    conversion: Integer values representing the number of conversions. Useful for tracking how many successful actions (conversions) were achieved via each medium.
+    fullVisitorId: Integer identifier for visitors. It could indicate unique visitors or sessions, relevant for understanding user behavior and journey analysis.
+    conversion_rate: Text values with percentages (e.g., "3.3%", "1.3%"). It represents the percentage of visitors who converted. This column would need to be converted into numerical format for proper analysis.
+    converted_user_journey: This column contains lists where each element represents:
+    The user journey, which is a sequence of mediums the user interacted with before converting.
+    The number of conversions associated with that specific journey.
+    non_converted_user_journey: This column contains lists structured similarly to the converted journey column, but it tracks journeys where users did not convert. Each element represents:
+    The user journey, which shows the sequence of mediums the user interacted with.
+    he number of non-conversions (i.e., instances where users followed this path but did not convert).
+    to_state: Represents the edges showing where the user journey leads after interacting with the current medium. Similarly, each list element contains:
+    The state to which the user moves (e.g., "(conversion)" or another channel).
+    The probability of moving from the current state to the next.
+    from_state: Represents the edges that show where the user journey begins (i.e., the "from" states). Each list element contains two components:
+    The state from which the user came (e.g., "(start)" or another channel).
+    The probability of transitioning from that state to the current medium.
+    channel_name_x: Categorical column representing the name of the channel that brought users (e.g., "Direct", "Search"). This is useful for channel attribution analysis.
+    total_conversions: Floating-point values, representing the total number of conversions attributed to a channel or medium. Important for determining the effectiveness of each marketing strategy.
+    total_conversion_value: Floating-point values indicating the total monetary value of conversions from each medium. This column would be used to measure the revenue impact of conversions.
+    channel_name_y: Another categorical column representing the channel name. Its presence, along with channel_name_x, raises the question of whether there’s a distinction between the two, or if they represent the same data.
+    removal_effects_conversion: Floating-point values representing the percentage effect of removing a channel from the conversion path. This is useful for analyzing channel importance in multi-touch attribution.
+    removal_effects_conversion_value: Floating-point values showing the monetary effect of removing a channel. This helps in understanding how important each channel is in terms of revenue.
 
     Please analyze the best and worst user journeys based on conversion rates and value, and provide the ideal budget allocation for the channels to maximize conversions.
 
