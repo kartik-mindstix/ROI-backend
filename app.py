@@ -1,10 +1,12 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/')
-def home():
-    return '<h1>hello</h1>'
+def index():
+    return render_template('index.html')
 @app.route('/submit-data', methods=['POST'])
 def handle_data():
     data = request.get_json()
