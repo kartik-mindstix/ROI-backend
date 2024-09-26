@@ -6,6 +6,7 @@ import os
 from werkzeug.utils import secure_filename
 from flask_cors import CORS
 from data_generation import summarised_data_generation
+from openai_api import generate_insights_json
 
 app = Flask(__name__)
 CORS(app)
@@ -38,6 +39,21 @@ def testing():
     except Exception as e:
         return jsonify({'error': 'No data provided','details':e}), 400
 
+@app.route('/generate-insights',methods=['POST'])
+def generate_insights():
+    data = request.json
+    generate_insights_json()
+
+
+
+@app.route('/generate-master-table',methods=['POST'])
+def generate_master_table():
+    data = request.json
+    df = pd.read_csv(f'./test/{data['filename']}')
+    summarised_data_generation(df)
+
+    return jsonify({'message':'master table created'}),200
+
 
 @app.route('/submit-csv', methods=['POST'])
 def handle_csv():
@@ -48,18 +64,6 @@ def handle_csv():
 
     f.save(os.path.join(app.config['UPLOAD_FOLDER'],
                             data_filename))
-    
-
-    df = pd.read_csv(f'./datasets/{data_filename}')
-
-
-    summarised_data_generation(df,data_filename)
-
-
-    print(f)
-
- 
-    print(data_filename)
     
     return jsonify({'message':'data received succesfully'}),200
 
