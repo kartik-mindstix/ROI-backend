@@ -45,12 +45,16 @@
             const formData = new FormData();
             formData.append('file', csvFile);
 
+            console.log(formData);
+
             // Send the file to the backend
             try {
-                const response = await fetch('/api/submit-csv', {
+                const response = await fetch('/submit-csv', {
                     method: 'POST',
                     body: formData
                 });
+
+                console.log(response);
 
                 if (response.ok) {
                     const result = await response.json();
