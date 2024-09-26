@@ -36,7 +36,7 @@ def testing():
                             file_name))
         return jsonify({'message': 'Data received successfully'}),200
     except Exception as e:
-        return jsonify({'error': 'No data provided'}), 400
+        return jsonify({'error': 'No data provided','details':e}), 400
 
 
 @app.route('/submit-csv', methods=['POST'])
